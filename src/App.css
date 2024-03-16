@@ -36,3 +36,77 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* styles.css */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.app {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 100%;
+}
+
+.left-section {
+  flex: 1;
+  padding: 20px;
+  background-color: #eff7ff;
+  height: 100vh; /* Make left section full-length */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+}
+
+.left-section h1 {
+  text-align: center; /* Center the header text */
+}
+
+.right-section {
+  flex: 1;
+  padding: 20px;
+  background-color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh; /* Make right section full-length */
+}
+
+.file-upload-container {
+  width: 80%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 2px dashed #ccc;
+  text-align: center;
+  cursor: pointer;
+}
+
+.file-upload-container.highlight {
+  border-color: #aaa;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.drag-text {
+  font-size: 18px;
+  color: #666;
+}
+
+.upload-label {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+  display: block;
+  font-weight: bold; /* Make label bold */
+}
