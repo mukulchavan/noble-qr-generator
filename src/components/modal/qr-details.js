@@ -41,7 +41,10 @@ export default function QrDetails({ open , invoiceObj  }){
     const [totalInvoiceValue, setTotalInvoiceValue] = useState(invoiceObj.totalInvoiceValue);
     const [hsnNode, setHsnNode] = useState(invoiceObj.hsnNode);
 
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        window.location.reload()
+    }
 
     useEffect(() => {
         setOpen(open)
@@ -98,7 +101,6 @@ export default function QrDetails({ open , invoiceObj  }){
     const generateQRCode = async()  => {
 
         const combinedData = `${poNo},${poOrderItemNo},${vendorInvoicePartQty},${gstInvoiceNo},${invoiceDate},${grossRate},${netRate}${vendorCode},${taxValueCSGT},${taxValueSGST},${taxValueIGST},${taxValueUGST},${taxRateCSGT},${taxRateSGST},${taxRateIGST},${taxRateUGST},${cess},${totalInvoiceValue},${hsnNode}`;
-        debugger
         // Generate QR code for the combined data
         const qrCodeDataURL = await QRCode.toDataURL(combinedData);
         // Create a link element
@@ -108,6 +110,8 @@ export default function QrDetails({ open , invoiceObj  }){
         console.log("Link :", link)
         // Trigger a click event on the link
         link.click();
+
+        window.location.reload()
     }
     return (
         <Modal

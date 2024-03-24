@@ -1,22 +1,22 @@
 import * as XLSX from "xlsx";
 import {toast} from "react-toastify";
 import QRCode from "qrcode";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import QrDetails from "../modal/qr-details";
 
 export default  function RightSection() {
     const [highlight, setHighlight] = useState(false);
     const [open, setOpen] = React.useState(false);
+    const [key, setKey] = useState(0);
     const [invoiceDetails , setInvoiceDetails] = React.useState({});
     const handleOpen = () => setOpen(true);
     const processExcel = (e) => {
         e.preventDefault();
-
         let files = e.target.files, f = files[0];
         let reader = new FileReader();
-        reader.onload = async function (e) {
+        reader.onload = function (e) {
             let data = e.target.result;
-
+            
             try {
                 // Load existing workbook
                 const workbook = XLSX.read(data, { type: 'binary' });
@@ -27,7 +27,7 @@ export default  function RightSection() {
                 const masterList = workbook.SheetNames[0]; // Read the second sheet (index 1)
                 const ml = workbook.Sheets[masterList];
                 const dataParse = XLSX.utils.sheet_to_json(ml, { header: 1 });
-                console.table(dataParse)
+                //console.table(dataParse)
 
                 const poNo = ws['H4'] ? ws['H4'].v : ''; // PO NO
                 if(!poNo || !Number(poNo)){
@@ -59,13 +59,13 @@ export default  function RightSection() {
                 }
 
                 const description = ws['B14'] ? ws['B14'].v : '';
-                console.log("DESCRIPTION : " , description);
+                //console.log("DESCRIPTION : " , description);
                 const netRate = "00";
                 const row = dataParse.findIndex(row => {
                     return row[1] === description
                 })
 
-                console.log("FROM MASTER LIST : ITEM : ", dataParse[row] , )
+                //console.log("FROM MASTER LIST : ITEM : ", dataParse[row] , )
                 const invoicePartNumber = dataParse[row][2];
 
                 if(!(Number(invoicePartNumber) && invoicePartNumber.length === 12)){
@@ -92,7 +92,6 @@ export default  function RightSection() {
                     toast.error("HSN Code is invalid or empty");
                     return;
                 }
-                console.log(taxRateSGST,"taxRateSGST")
                 // Combine PONO, GSTNO, and INVOICEDATE into a single string
 
                 const invoiceObj = {
@@ -120,7 +119,8 @@ export default  function RightSection() {
                 setInvoiceDetails(invoiceObj);
                 handleOpen();
                 //await generateQRCode(combinedData)
-                e.target.value = ''
+                setKey((prevKey) => prevKey + 1);
+                e.target.value = null; // Reset the file input
 
             } catch (error) {
                 console.error('Error processing Excel file:', error);
@@ -141,10 +141,10 @@ export default  function RightSection() {
     const handleDrop = (e) => {
         e.preventDefault();
         setHighlight(false);
-        const files = e.dataTransfer.files;
+        //const files = e.dataTransfer.files;
+        toast.error("Drag and drop is under development")
         //handleFiles(files);
     };
-
 
     return (
         <div
@@ -157,11 +157,12 @@ export default  function RightSection() {
 
             <div className="file-upload-container">
                 <input
+                    key={key}
                     type="file"
                     id="fileInput"
-                    multiple
+                    accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     onChange={processExcel}
-                />
+                   />
                 <label htmlFor="fileInput" className="drag-text">
                     Drag & Drop files here or click to upload
                 </label>
