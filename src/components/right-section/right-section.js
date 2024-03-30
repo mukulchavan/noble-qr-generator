@@ -30,33 +30,33 @@ export default  function RightSection() {
                 //console.table(dataParse)
 
                 const poNo = ws['H4'] ? ws['H4'].v : ''; // PO NO
-                if(!poNo || !Number(poNo)){
-                    toast.error("PO Number is invalid or empty");
-                    return;
-                }
+                // if(!poNo || !Number(poNo)){
+                //     toast.error("PO Number is invalid or empty");
+                //     return;
+                // }
 
                 const poOrderItemNo = "10";
                 const vendorInvoicePartQty = ws['E14'] ? ws['E14'].v : '';
-                if(!vendorInvoicePartQty || !Number(vendorInvoicePartQty)){
-                    toast.error("Vendor invoice Part Qty is invalid or empty");
-                    return;
-                }
+                // if(!vendorInvoicePartQty || !Number(vendorInvoicePartQty)){
+                //     toast.error("Vendor invoice Part Qty is invalid or empty");
+                //     return;
+                // }
 
                 const gstInvoiceNo = ws['C4'] ? ws['C4'].v : ''; // GST NO
-                if(!gstInvoiceNo){
-                    toast.error("GST Number is invalid or empty");
-                    return;
-                }
+                // if(!gstInvoiceNo){
+                //     toast.error("GST Number is invalid or empty");
+                //     return;
+                // }
                 const invoiceDate = ws['C5'] ? ws['C5'].v : ''; // INVOICE DATE
-                if(!invoiceDate){
-                    toast.error("Invoice Date is invalid or empty");
-                    return;
-                }
+                // if(!invoiceDate){
+                //     toast.error("Invoice Date is invalid or empty");
+                //     return;
+                // }
                 const grossRate =  ws['F14'] ? ws['F14'].v : '';
-                if(!grossRate){
-                    toast.error("Gross Rate is invalid or empty");
-                    return;
-                }
+                // if(!grossRate){
+                //     toast.error("Gross Rate is invalid or empty");
+                //     return;
+                // }
 
                 const description = ws['B14'] ? ws['B14'].v : '';
                 //console.log("DESCRIPTION : " , description);
@@ -68,19 +68,20 @@ export default  function RightSection() {
                 //console.log("FROM MASTER LIST : ITEM : ", dataParse[row] , )
                 const invoicePartNumber = dataParse[row][2];
 
-                if(!(Number(invoicePartNumber) && invoicePartNumber.length === 12)){
-                    toast.error("Invoice Part Number is invalid or empty");
-                    return;
-                }
+                // if(!(Number(invoicePartNumber) && invoicePartNumber.length === 12)){
+                //     toast.error("Invoice Part Number is invalid or empty");
+                //     return;
+                // }
                 const vendorCode = "N00160";
                 const taxValueCSGT = ws['J14'] ? ws['J14'].v : 0.00;
                 const taxValueSGST = ws['L14'] ? ws['L14'].v : 0.00;
                 const taxValueIGST = ws['N14'] ? ws['N14'].v : 0.00;
                 const taxValueUGST = 0.00;
 
-                const taxRateCSGT = ws['I14'] ? ws['I14'].v.toFixed(2)  : 0.00;
-                const taxRateSGST = ws['K14'] ? ws['K14'].v.toFixed(2)    : 0.00;
-                const taxRateIGST = ws['M14'] ? ws['M14'].v.toFixed(2)    : 0.00;
+                const taxRateCSGT = ws['I14'] ? (ws['I14'].v * 100).toFixed(2)  : 0.00;
+                const taxRateSGST = ws['K14'] ? (ws['K14'].v * 100).toFixed(2)  : 0.00;
+                const taxRateIGST = ws['M14'] ? (ws['M14'].v * 100).toFixed(2)   : 0.00;
+                console.log(taxRateIGST)
                 const taxRateUGST = 0.00;
 
                 const cess = 0.00;
